@@ -1,68 +1,56 @@
 package herramientas;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+
 public class Provincia {
+
+    // Usamos una lista estática para no recrearla con cada instancia
+    private static final List<String> PROVINCIAS_VALIDAS = Arrays.asList(
+            "buenos aires", "catamarca", "chaco", "chubut", "cordoba",
+            "corrientes", "entre rios", "formosa", "jujuy", "la pampa",
+            "la rioja", "mendoza", "misiones", "neuquen", "rio negro",
+            "salta", "san juan", "san luis", "santa cruz", "santa fe",
+            "santiago del estero", "tierra del fuego", "tucuman");
 
     private String nombre;
 
     public Provincia(String nombre) {
-    	
-    	if(!esProvincia(nombre.toLowerCase())) {
-    		
-    		throw new IllegalArgumentException ("La provincia ingresada no es valida.");
-    	}
-    	
-        this.nombre = nombre;
+        String nombreNormalizado = nombre.toLowerCase();
+
+        if (!PROVINCIAS_VALIDAS.contains(nombreNormalizado)) {
+            throw new IllegalArgumentException("La provincia ingresada no es valida.");
+        }
+
+        this.nombre = nombreNormalizado;
     }
 
     public String getNombre() {
-        return nombre.toLowerCase();
+        return nombre;
     }
-    
-    private boolean esProvincia(String nombre) {
-        return nombre.equals("buenos aires")
-            || nombre.equals("catamarca")
-            || nombre.equals("chaco")
-            || nombre.equals("chubut")
-            || nombre.equals("cordoba")
-            || nombre.equals("corrientes")
-            || nombre.equals("entre rios")
-            || nombre.equals("formosa")
-            || nombre.equals("jujuy")
-            || nombre.equals("la pampa")
-            || nombre.equals("la rioja")
-            || nombre.equals("mendoza")
-            || nombre.equals("misiones")
-            || nombre.equals("neuquen")
-            || nombre.equals("rio negro")
-            || nombre.equals("salta")
-            || nombre.equals("san juan")
-            || nombre.equals("san luis")
-            || nombre.equals("santa cruz")
-            || nombre.equals("santa fe")
-            || nombre.equals("santiago del estero")
-            || nombre.equals("tierra del fuego")
-            || nombre.equals("tucuman");
-            
-    }
-    
+
     @Override
-    public boolean equals(Object provincia) {
-    	
-        if (this == provincia) {
+    public boolean equals(Object o) {
+        if (this == o)
             return true;
-        }
-
-        if (provincia == null || getClass() != provincia.getClass()) {
+        if (o == null || getClass() != o.getClass())
             return false;
-        }
-
-        Provincia otra = (Provincia) provincia;
-
-        return nombre.toLowerCase().equals(otra.nombre.toLowerCase());
+        Provincia provincia = (Provincia) o;
+        // Como ya normalizamos en el constructor, la comparación es directa
+        return Objects.equals(nombre, provincia.nombre);
     }
-    
+
     @Override
     public int hashCode() {
-        return nombre.hashCode();
+        // Al estar normalizado, el hashCode funciona correctamente
+        return Objects.hash(nombre);
+    }
+
+    @Override
+    public String toString() {
+        // Capitaliza la primera letra para mostrarla más prolija si querés,
+        // o simplemente devolver el nombre normalizado.
+        return nombre;
     }
 }

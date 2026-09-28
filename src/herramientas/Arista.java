@@ -1,27 +1,37 @@
 package herramientas;
 
-public class Arista {
+public class Arista<T> {
+    private Nodo<T> destino;
+    private double peso;
 
-    private Provincia provincia1;
-    private Provincia provincia2;
-    private double similaridad;
-
-    public Arista(Provincia provincia1,Provincia provincia2,double similaridad) {
-
-        this.provincia1 = provincia1;
-        this.provincia2 = provincia2;
-        this.similaridad = similaridad;
+    public Arista(Nodo<T> destino, double peso) {
+        this.destino = destino;
+        this.peso = peso;
     }
 
-    public Provincia getProvincia1() {
-        return provincia1;
+    public Nodo<T> getDestino() {
+        return destino;
     }
 
-    public Provincia getProvincia2() {
-        return provincia2;
+    public double getPeso() {
+        return peso;
     }
 
-    public double getSimilaridad() {
-        return similaridad;
+    @Override
+    public String toString() {
+        return destino.toString() + " (peso: " + peso + ")";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Arista<?> arista = (Arista<?>) o;
+        return Double.compare(arista.peso, peso) == 0 && destino.equals(arista.destino);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(destino, peso);
     }
 }
