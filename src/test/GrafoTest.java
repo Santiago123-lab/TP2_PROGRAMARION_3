@@ -91,4 +91,42 @@ public class GrafoTest {
         // por lo tanto no se les puede crear una arista
         grafo.agregarArista(nodoExterno1, nodoExterno2, 3.0);
     }
+    
+    @Test
+    public void testObtenerAristasUnicas() {
+    	
+        grafo.agregarArista(nodoA, nodoB, 10.0);
+        grafo.agregarArista(nodoA, nodoC, 5.0);
+
+        List<Arista<String>> aristas = grafo.getAristas();
+
+        assertEquals(2, aristas.size());
+
+        boolean existeAB = false;
+        boolean existeAC = false;
+
+        for (Arista<String> arista : aristas) {
+        	
+            if (arista.getOrigen().equals(nodoA)
+            		
+                    && arista.getDestino().equals(nodoB)
+                    
+                    && arista.getPeso() == 10.0) {
+            	
+                existeAB = true;
+            }
+
+            if (arista.getOrigen().equals(nodoA)
+            		
+                    && arista.getDestino().equals(nodoC)
+                    
+                    && arista.getPeso() == 5.0) {
+            	
+                existeAC = true;
+            }
+        }
+
+        assertTrue(existeAB);
+        assertTrue(existeAC);
+    }
 }

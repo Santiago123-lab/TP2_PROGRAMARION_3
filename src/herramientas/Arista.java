@@ -3,8 +3,10 @@ package herramientas;
 public class Arista<T> {
     private Nodo<T> destino;
     private double peso;
+    private Nodo<T> origen;
 
-    public Arista(Nodo<T> destino, double peso) {
+    public Arista(Nodo<T> origen, Nodo<T> destino, double peso) {
+        this.origen = origen;
         this.destino = destino;
         this.peso = peso;
     }
@@ -15,6 +17,10 @@ public class Arista<T> {
 
     public double getPeso() {
         return peso;
+    }
+    
+    public Nodo<T> getOrigen() {
+        return origen;
     }
 
     @Override
@@ -27,11 +33,13 @@ public class Arista<T> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Arista<?> arista = (Arista<?>) o;
-        return Double.compare(arista.peso, peso) == 0 && destino.equals(arista.destino);
+        return Double.compare(arista.peso, peso) == 0
+                && ((origen.equals(arista.origen) && destino.equals(arista.destino))
+                || (origen.equals(arista.destino) && destino.equals(arista.origen)));
     }
 
     @Override
     public int hashCode() {
-        return java.util.Objects.hash(destino, peso);
+        return origen.hashCode() + destino.hashCode() + Double.hashCode(peso);
     }
 }

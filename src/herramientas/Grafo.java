@@ -32,8 +32,8 @@ public class Grafo<T> {
             throw new IllegalArgumentException("La arista entre estos nodos ya existe.");
         }
 
-        adyacencias.get(origen).add(new Arista<>(destino, peso));
-        adyacencias.get(destino).add(new Arista<>(origen, peso));
+        adyacencias.get(origen).add(new Arista<>(origen, destino, peso));
+        adyacencias.get(destino).add(new Arista<>(destino, origen, peso));
     }
 
     public List<Arista<T>> getVecinos(Nodo<T> nodo) {
@@ -47,4 +47,17 @@ public class Grafo<T> {
                             " -> Vecinos: " + entry.getValue());
         }
     }
+    
+    public List<Arista<T>> getAristas() {
+    	
+        Set<Arista<T>> aristasUnicas = new HashSet<>();
+
+        for (List<Arista<T>> lista : adyacencias.values()) {
+        	
+            aristasUnicas.addAll(lista);
+        }
+
+        return new ArrayList<>(aristasUnicas);
+    }
+    
 }
