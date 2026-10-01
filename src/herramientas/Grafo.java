@@ -4,10 +4,12 @@ import java.util.*;
 
 public class Grafo<T> {
 
-    private Map<Nodo<T>, List<Arista<T>>> adyacencias;
+    private Map<Nodo<T>, List<Adyacencia<T>>> adyacencias;
+    private List<Arista<T>> listaDeAristasGlobal;
 
     public Grafo() {
         this.adyacencias = new HashMap<>();
+        this.listaDeAristasGlobal = new ArrayList<>();
     }
 
     public Nodo<T> agregarNodo(T valor) {
@@ -32,16 +34,25 @@ public class Grafo<T> {
             throw new IllegalArgumentException("La arista entre estos nodos ya existe.");
         }
 
-        adyacencias.get(origen).add(new Arista<>(destino, peso));
-        adyacencias.get(destino).add(new Arista<>(origen, peso));
+        adyacencias.get(origen).add(new Adyacencia<>(destino, peso));
+        adyacencias.get(destino).add(new Adyacencia<>(origen, peso));
+        listaDeAristasGlobal.add(new Arista<>(origen, destino, peso));
     }
 
-    public List<Arista<T>> getVecinos(Nodo<T> nodo) {
+    public List<Adyacencia<T>> getVecinos(Nodo<T> nodo) {
         return adyacencias.getOrDefault(nodo, Collections.emptyList());
     }
 
+    public List<Nodo<T>> getTodosLosNodos() {
+        return new ArrayList<>(adyacencias.keySet());
+    }
+
+    public List<Arista<T>> getTodasLasAristas() {
+        return listaDeAristasGlobal;
+    }
+
     public void imprimirGrafo() {
-        for (Map.Entry<Nodo<T>, List<Arista<T>>> entry : adyacencias.entrySet()) {
+        for (Map.Entry<Nodo<T>, List<Adyacencia<T>>> entry : adyacencias.entrySet()) {
             System.out.println(
                     "Nodo " + entry.getKey() +
                             " -> Vecinos: " + entry.getValue());
