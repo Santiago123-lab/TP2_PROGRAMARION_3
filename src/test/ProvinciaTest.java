@@ -1,8 +1,10 @@
 package test;
 
 import static org.junit.Assert.*;
-import herramientas.Provincia;
+
 import org.junit.Test;
+
+import estructuras.Provincia;
 
 public class ProvinciaTest {
 	

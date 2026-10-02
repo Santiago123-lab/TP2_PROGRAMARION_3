@@ -1,4 +1,4 @@
-package herramientas;
+package estructuras;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +16,8 @@ public class Region {
     }
 
     public Set<Provincia> getProvincias() {
-        return provincias;
+    	return new HashSet<>(provincias); 
+    	//NOTA: Se retorna una copia de lo almacenado en provincias para 
+    	//evitar por ejemplo region.getProvincias().clear()
     }
 }

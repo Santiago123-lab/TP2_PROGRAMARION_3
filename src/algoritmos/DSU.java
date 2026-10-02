@@ -1,8 +1,10 @@
-package herramientas;
+package algoritmos;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import grafo.Nodo;
 
 public class DSU<T> {
     private Map<T, T> padre;

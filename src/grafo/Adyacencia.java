@@ -1,4 +1,4 @@
-package herramientas;
+package grafo;
 
 public class Adyacencia<T> {
     private Nodo<T> destino;

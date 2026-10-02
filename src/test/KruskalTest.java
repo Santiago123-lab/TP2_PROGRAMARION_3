@@ -4,10 +4,10 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import herramientas.Grafo;
-import herramientas.Nodo;
-import herramientas.Arista;
-import herramientas.Kruskal;
+import algoritmos.Kruskal;
+import grafo.Arista;
+import grafo.Grafo;
+import grafo.Nodo;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package herramientas;
+package grafo;
 
 public class Arista<T> {
     private Nodo<T> origen;

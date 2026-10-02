@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import herramientas.DSU;
-import herramientas.Nodo;
+import algoritmos.DSU;
+import grafo.Nodo;
 
 import java.util.Arrays;
 

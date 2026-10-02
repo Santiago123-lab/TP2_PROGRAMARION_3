@@ -1,4 +1,4 @@
-package herramientas;
+package algoritmos;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -6,9 +6,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import estructuras.Provincia;
+import estructuras.Region;
+import grafo.Arista;
+import grafo.Grafo;
+import grafo.Nodo;
+
 public class BuscadorDeRegiones {
 
     public List<Region> agrupar(Grafo<Provincia> mst, int k) {
+    	
+    	if (k < 1 || k > mst.getTodosLosNodos().size()) {
+    	    throw new IllegalArgumentException("La cantidad de regiones debe mayor a 1 y menor a la cantidad de provincias");
+    	}
+    	
         List<Arista<Provincia>> aristas = mst.getTodasLasAristas();
         aristas.sort(Comparator.comparingDouble(Arista::getPeso));
 

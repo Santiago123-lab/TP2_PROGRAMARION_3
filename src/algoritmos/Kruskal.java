@@ -1,8 +1,12 @@
-package herramientas;
+package algoritmos;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import grafo.Arista;
+import grafo.Grafo;
+import grafo.Nodo;
 
 public class Kruskal {
 

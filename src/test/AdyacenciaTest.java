@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import herramientas.Adyacencia;
-import herramientas.Nodo;
+import grafo.Adyacencia;
+import grafo.Nodo;
 
 public class AdyacenciaTest {
 

@@ -1,5 +1,5 @@
 
-package herramientas;
+package grafo;
 
 import java.util.*;
 

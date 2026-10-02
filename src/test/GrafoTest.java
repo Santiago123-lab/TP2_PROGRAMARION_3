@@ -3,10 +3,11 @@ package test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import herramientas.Grafo;
-import herramientas.Nodo;
-import herramientas.Arista;
-import herramientas.Adyacencia;
+
+import grafo.Adyacencia;
+import grafo.Arista;
+import grafo.Grafo;
+import grafo.Nodo;
 
 import java.util.List;
 

@@ -3,11 +3,13 @@ package test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import herramientas.BuscadorDeRegiones;
-import herramientas.Grafo;
-import herramientas.Nodo;
-import herramientas.Provincia;
-import herramientas.Region;
+
+import algoritmos.BuscadorDeRegiones;
+import estructuras.Provincia;
+import estructuras.Region;
+import grafo.Grafo;
+import grafo.Nodo;
+
 import java.util.List;
 
 public class BuscadorDeRegionesTest {
@@ -43,4 +45,82 @@ public class BuscadorDeRegionesTest {
         assertEquals("Debería haber quedado 1 sola región", 1, regiones.size());
         assertEquals("La región debe contener las 3 provincias", 3, regiones.get(0).getProvincias().size());
     }
+    
+    @Test
+    public void testAgruparEnTresRegiones() {
+    	
+        List<Region> regiones = buscador.agrupar(mst, 3);
+
+        assertEquals(3, regiones.size());
+
+        for (Region region : regiones) {
+        	
+            assertEquals(1, region.getProvincias().size());
+        }
+    }
+    
+    @Test
+    public void testDosProvinciasJuntas() {
+    	
+        List<Region> regiones = buscador.agrupar(mst, 2);
+
+        boolean estanJuntas = false;
+
+        for (Region region : regiones) {
+        	
+            if (region.getProvincias().contains(new Provincia("Buenos Aires"))
+               && region.getProvincias().contains(new Provincia("Cordoba"))) {
+            	
+                estanJuntas = true;
+            }
+        }
+
+        assertTrue(estanJuntas);
+    }
+    
+    @Test
+    public void testDosProvinciasSeparadas() {
+    	
+        List<Region> regiones = buscador.agrupar(mst, 2);
+
+        boolean santaFeSeparada = false;
+
+        for (Region region : regiones) {
+        	
+            if (region.getProvincias().contains(new Provincia("Santa Fe"))
+               && !region.getProvincias().contains(new Provincia("Cordoba"))) {
+            	
+                santaFeSeparada = true;
+            }
+        }
+
+        assertTrue(santaFeSeparada);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testCantidadDeRegionesCero() {
+    	
+        buscador.agrupar(mst, 0);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testCantidadDeRegionesMayorACantidadDeProvincias() {
+    	
+        buscador.agrupar(mst, 4);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
