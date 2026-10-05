@@ -2,9 +2,16 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+
+import estructuras.Provincia;
+import grafo.Grafo;
+import grafo.Nodo;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
@@ -17,6 +24,8 @@ public class MainGrafoProvincias {
 	private JTextField segundaProvinciaUsuario;
 	private JTextField pesoUsuario;
 	private JTextField cantRegionesUsuario;
+	
+	private Grafo<Provincia> grafo = new Grafo<>();
 
 	
 	public static void main(String[] args) {
@@ -48,6 +57,27 @@ public class MainGrafoProvincias {
 		frame.getContentPane().add(escribaProvinciaText);
 		
 		JButton agregarProvinciaBoton = new JButton("Agregar provincia");
+		
+		agregarProvinciaBoton.addActionListener(new ActionListener() {
+			
+		    public void actionPerformed(ActionEvent e) {
+		    	
+		        String nombre = provinciaUsuario.getText();
+
+		        try {
+		            Provincia provincia = new Provincia(nombre);
+		            grafo.agregarNodo(provincia);
+
+		            JOptionPane.showMessageDialog(frame,"Provincia agregada: " + provincia.getNombre());
+
+		            provinciaUsuario.setText("");
+
+		        } catch (IllegalArgumentException ex) {
+		        	
+		            JOptionPane.showMessageDialog(frame,ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+		        }
+		    }
+		});
 		agregarProvinciaBoton.setBounds(249, 7, 117, 23);
 		frame.getContentPane().add(agregarProvinciaBoton);
 		
@@ -80,9 +110,51 @@ public class MainGrafoProvincias {
 		
 		JButton conectarBoton = new JButton("Conectar");
 		conectarBoton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
+		    public void actionPerformed(ActionEvent e) {
+
+		        String nombrePrimera = primeraProvinciaUsuario.getText();
+		        String nombreSegunda = segundaProvinciaUsuario.getText();
+
+		        try {
+		            Provincia primera = new Provincia(nombrePrimera);
+		            Provincia segunda = new Provincia(nombreSegunda);
+
+		            double peso = Double.parseDouble(pesoUsuario.getText());
+
+		            Nodo<Provincia> nodoPrimera = null;
+		            Nodo<Provincia> nodoSegunda = null;
+
+		            for (Nodo<Provincia> nodo : grafo.getTodosLosNodos()) {
+
+		                if (nodo.getValor().equals(primera)) {
+		                    nodoPrimera = nodo;
+		                }
+
+		                if (nodo.getValor().equals(segunda)) {
+		                    nodoSegunda = nodo;
+		                }
+		            }
+
+		            if (nodoPrimera == null || nodoSegunda == null) {
+		                throw new IllegalArgumentException(
+		                        "Ambas provincias deben estar agregadas al grafo.");
+		            }
+
+		            grafo.agregarArista(nodoPrimera, nodoSegunda, peso);
+
+		            JOptionPane.showMessageDialog(frame,"Conexión agregada correctamente.");
+
+		        } catch (NumberFormatException ex) {
+
+		            JOptionPane.showMessageDialog(frame,"El peso debe ser un número.","Error",JOptionPane.ERROR_MESSAGE);
+
+		        } catch (IllegalArgumentException ex) {
+
+		            JOptionPane.showMessageDialog(frame,ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+		        }
+		    }
 		});
+	
 		conectarBoton.setBounds(275, 69, 89, 23);
 		frame.getContentPane().add(conectarBoton);
 		
