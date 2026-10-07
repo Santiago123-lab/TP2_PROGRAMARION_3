@@ -13,6 +13,7 @@ public class MainView {
     private JButton agregarProvinciaBoton;
     private JButton conectarBoton;
     private JButton generarRegionesBoton;
+    private JButton cargarArchivoBoton;
     private JTextArea resultadoRegiones;
 
     public MainView() {
@@ -35,8 +36,12 @@ public class MainView {
         provinciaUsuario.setColumns(15);
         
         agregarProvinciaBoton = new JButton("Agregar provincia");
-        agregarProvinciaBoton.setBounds(249, 7, 130, 23);
+        agregarProvinciaBoton.setBounds(249,  7, 130, 23);
         frame.getContentPane().add(agregarProvinciaBoton);
+        
+        cargarArchivoBoton = new JButton("Cargar desde .txt");
+        cargarArchivoBoton.setBounds(249, 35, 150, 23); 
+        frame.getContentPane().add(cargarArchivoBoton);
         
         JLabel coloqueConexionText = new JLabel("Coloque su conexion:");
         coloqueConexionText.setBounds(10, 45, 117, 14);
@@ -73,6 +78,7 @@ public class MainView {
         generarRegionesBoton.setBounds(230, 109, 149, 23);
         frame.getContentPane().add(generarRegionesBoton);
         
+        
         resultadoRegiones = new JTextArea();
         resultadoRegiones.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(resultadoRegiones);
@@ -84,7 +90,7 @@ public class MainView {
         frame.setVisible(true);
     }
 
-    // --- GETTERS PARA QUE EL PRESENTER LEA LOS INPUTS ---
+    //GETTERS PARA QUE EL PRESENTER LEA LOS INPUTS
     public String getNombreProvincia() { return provinciaUsuario.getText().trim(); }
     public String getPrimeraProvincia() { return primeraProvinciaUsuario.getText().trim(); }
     public String getSegundaProvincia() { return segundaProvinciaUsuario.getText().trim(); }
@@ -101,8 +107,10 @@ public class MainView {
         resultadoRegiones.setText(texto);
     }
 
-    // --- LISTENERS PARA CONECTAR CON EL PRESENTER ---
+    //LISTENERS PARA CONECTAR CON EL PRESENTER
     public void setAgregarProvinciaListener(ActionListener l) { agregarProvinciaBoton.addActionListener(l); }
     public void setConectarListener(ActionListener l) { conectarBoton.addActionListener(l); }
     public void setGenerarRegionesListener(ActionListener l) { generarRegionesBoton.addActionListener(l); }
+    public void setCargarArchivoListener(ActionListener l) { cargarArchivoBoton.addActionListener(l);
+    }
 }

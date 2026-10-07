@@ -6,7 +6,9 @@ import grafo.Grafo;
 import grafo.Nodo;
 import algoritmos.Kruskal;
 import algoritmos.BuscadorDeRegiones;
-
+import java.io.FileInputStream;
+import java.util.Scanner;
+import java.io.File;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -40,6 +42,13 @@ public class MainPresenter {
             @Override
             public void actionPerformed(ActionEvent e) {
                 generarRegiones();
+            }
+        });
+        
+        this.vista.setCargarArchivoListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cargarDesdeArchivo();
             }
         });
     }
@@ -87,13 +96,13 @@ public class MainPresenter {
         try {
             int k = Integer.parseInt(vista.getCantRegionesStr());
             
-            // 1. Calculamos el MST usando Kruskal
+            //calculamos el MST usando Kruskal
             Grafo<Provincia> mst = Kruskal.calcularMST(grafo);
             
-            // 2. Buscamos las regiones dividiendo el MST
+            //buscamos las regiones dividiendo el MST
             List<Region> regiones = buscador.agrupar(mst, k);
 
-            // 3. Formateamos el resultado para mostrarlo en el JTextArea
+            //formateamos el resultado para mostrarlo en el JTextArea
             StringBuilder sb = new StringBuilder();
             sb.append("Se generaron ").append(regiones.size()).append(" regiones:\n");
             for (int i = 0; i < regiones.size(); i++) {
@@ -105,6 +114,56 @@ public class MainPresenter {
             vista.mostrarMensaje("La cantidad de regiones debe ser un número entero.", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception ex) {
             vista.mostrarMensaje(ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void cargarDesdeArchivo() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Seleccione el archivo de provincias (.txt)");
+
+        int seleccion = fileChooser.showOpenDialog(null);
+        
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            File archivo = fileChooser.getSelectedFile();
+            
+            try (FileInputStream fis = new FileInputStream(archivo);
+            	Scanner scanner = new Scanner(fis)) {
+            	int conexionesAgregadas = 0;
+                
+                while (scanner.hasNextLine()) {
+                    String linea = scanner.nextLine().trim();
+                    if (linea.isEmpty()) continue; 
+                    
+                    String[] partes = linea.split(",");
+                    if (partes.length == 3) {
+                        String nombreP1 = partes[0].trim();
+                        String nombreP2 = partes[1].trim();
+                        double peso = Double.parseDouble(partes[2].trim());
+
+                        Provincia p1 = new Provincia(nombreP1);
+                        Provincia p2 = new Provincia(nombreP2);
+
+                        Nodo<Provincia> nodo1 = null;
+                        Nodo<Provincia> nodo2 = null;
+
+                        // Busca si los nodos ya están, sino los agrega
+                        for (Nodo<Provincia> n : grafo.getTodosLosNodos()) {
+                            if (n.getValor().equals(p1)) nodo1 = n;
+                            if (n.getValor().equals(p2)) nodo2 = n;
+                        }
+                        if (nodo1 == null) nodo1 = grafo.agregarNodo(p1);
+                        if (nodo2 == null) nodo2 = grafo.agregarNodo(p2);
+
+                        grafo.agregarArista(nodo1, nodo2, peso);
+                        conexionesAgregadas++;
+                    }
+                }
+                vista.mostrarMensaje("Archivo cargado exitosamente. Se agregaron " + conexionesAgregadas + " conexiones.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            } catch (Exception ex) {
+                // Manejo de errores como muestra la diapositiva[cite: 19, 21]
+                vista.mostrarMensaje("Error al leer el archivo: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 }
