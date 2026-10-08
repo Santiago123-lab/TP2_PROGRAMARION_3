@@ -1,7 +1,9 @@
 package interfaz;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MainView {
     private JFrame frame;
@@ -15,75 +17,103 @@ public class MainView {
     private JButton generarRegionesBoton;
     private JButton cargarArchivoBoton;
     private JTextArea resultadoRegiones;
+    
 
     public MainView() {
+    	try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch(Exception e) { 
+            e.printStackTrace(); 
+        }
         initialize();
     }
 
     private void initialize() {
         frame = new JFrame();
-        frame.setBounds(100, 100, 450, 320);
+        frame.setTitle("Buscador de Regiones - TP2");
+        frame.setBounds(100, 100, 1100, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(null);
         
+        // Gestión de Provincias
+        JPanel panelProvincias = new JPanel();
+        panelProvincias.setBorder(new TitledBorder("Gestión de Provincias"));
+        panelProvincias.setBounds(10, 11, 440, 170);
+        panelProvincias.setLayout(null);
+        frame.getContentPane().add(panelProvincias);
+        
         JLabel escribaProvinciaText = new JLabel("Escriba una provincia:");
-        escribaProvinciaText.setBounds(10, 11, 117, 14);
+        escribaProvinciaText.setBounds(15, 30, 60, 14);
         frame.getContentPane().add(escribaProvinciaText);
         
         provinciaUsuario = new JTextField();
-        provinciaUsuario.setBounds(132, 8, 86, 20);
-        frame.getContentPane().add(provinciaUsuario);
+        provinciaUsuario.setBounds(15, 27, 100, 21);
+        panelProvincias.add(provinciaUsuario);
         provinciaUsuario.setColumns(15);
         
         agregarProvinciaBoton = new JButton("Agregar provincia");
-        agregarProvinciaBoton.setBounds(249,  7, 130, 23);
-        frame.getContentPane().add(agregarProvinciaBoton);
+        agregarProvinciaBoton.setToolTipText("Agrega la provincia escrita al sistema");
+        agregarProvinciaBoton.setBounds(125, 26, 120, 23);
+        panelProvincias.add(agregarProvinciaBoton);
         
-        cargarArchivoBoton = new JButton("Cargar desde .txt");
-        cargarArchivoBoton.setBounds(249, 35, 150, 23); 
-        frame.getContentPane().add(cargarArchivoBoton);
+        cargarArchivoBoton = new JButton("Cargar .TXT");
+        cargarArchivoBoton.setToolTipText("Carga múltiples provincias y conexiones desde un archivo");
+        cargarArchivoBoton.setBounds(255, 26, 120, 23); 
+        panelProvincias.add(cargarArchivoBoton);
         
-        JLabel coloqueConexionText = new JLabel("Coloque su conexion:");
-        coloqueConexionText.setBounds(10, 45, 117, 14);
-        frame.getContentPane().add(coloqueConexionText);
+        //conexiones (aristas)
+        JPanel panelConexiones = new JPanel();
+        panelConexiones.setBorder(new TitledBorder("Conexiones (Aristas)"));
+        panelConexiones.setBounds(10, 105, 440, 75);
+        panelConexiones.setLayout(null);
+        frame.getContentPane().add(panelConexiones);
         
-        primeraProvinciaUsuario = new JTextField();
-        primeraProvinciaUsuario.setText("Primera provincia");
-        primeraProvinciaUsuario.setBounds(10, 70, 100, 20);
-        frame.getContentPane().add(primeraProvinciaUsuario);
+        primeraProvinciaUsuario = new JTextField("Provincia 1");
+        primeraProvinciaUsuario.setBounds(15, 30, 95, 21);
+        panelConexiones.add(primeraProvinciaUsuario);
         
-        segundaProvinciaUsuario = new JTextField();
-        segundaProvinciaUsuario.setText("Segunda provincia");
-        segundaProvinciaUsuario.setBounds(115, 70, 105, 20);
-        frame.getContentPane().add(segundaProvinciaUsuario);
+        segundaProvinciaUsuario = new JTextField("Provincia 2");
+        segundaProvinciaUsuario.setBounds(120, 30, 95, 21);
+        panelConexiones.add(segundaProvinciaUsuario);
         
-        pesoUsuario = new JTextField();
-        pesoUsuario.setText("Peso");
-        pesoUsuario.setBounds(225, 70, 45, 20);
-        frame.getContentPane().add(pesoUsuario);
+        pesoUsuario = new JTextField("Peso");
+        pesoUsuario.setBounds(225, 30, 50, 21);
+        panelConexiones.add(pesoUsuario);
         
         conectarBoton = new JButton("Conectar");
-        conectarBoton.setBounds(275, 69, 104, 23);
-        frame.getContentPane().add(conectarBoton);
+        conectarBoton.setBounds(285, 29, 140, 23);
+        conectarBoton.setToolTipText("Crea la arista entre las dos provincias");
+        panelConexiones.add(conectarBoton);        
+        
+        //generación de regiones
+        JPanel panelResultados = new JPanel();
+        panelResultados.setBorder(new TitledBorder("Generación de Regiones"));
+        panelResultados.setBounds(10, 190, 440, 350);
+        panelResultados.setLayout(null);
+        frame.getContentPane().add(panelResultados);
         
         JLabel cantRegionesText = new JLabel("Cantidad regiones:");
-        cantRegionesText.setBounds(10, 113, 117, 14);
-        frame.getContentPane().add(cantRegionesText);
+        cantRegionesText.setBounds(16, 29, 98, 17);
+        panelResultados.add(cantRegionesText);
         
         cantRegionesUsuario = new JTextField();
-        cantRegionesUsuario.setBounds(132, 110, 86, 20);
-        frame.getContentPane().add(cantRegionesUsuario);
+        cantRegionesUsuario.setBounds(118, 27, 50, 21);
+        panelResultados.add(cantRegionesUsuario);
         
         generarRegionesBoton = new JButton("Generar regiones");
-        generarRegionesBoton.setBounds(230, 109, 149, 23);
-        frame.getContentPane().add(generarRegionesBoton);
-        
+        generarRegionesBoton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        	}
+        });
+        generarRegionesBoton.setToolTipText("Aplica Kruskal para dividir el grafo");
+        generarRegionesBoton.setBounds(178, 26, 150, 23);
+        panelResultados.add(generarRegionesBoton);
         
         resultadoRegiones = new JTextArea();
         resultadoRegiones.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(resultadoRegiones);
-        scrollPane.setBounds(10, 150, 414, 110);
-        frame.getContentPane().add(scrollPane);
+        JScrollPane scrollResultados = new JScrollPane(resultadoRegiones);
+        scrollResultados.setBounds(15, 60, 410, 105);
+        panelResultados.add(scrollResultados);
     }
 
     public void mostrar() {
