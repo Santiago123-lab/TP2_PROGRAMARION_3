@@ -48,6 +48,7 @@ public class MainPresenter {
     private static final Map<String, Coordinate> COORDENADAS =
             crearCoordenadas();
 
+    
     public MainPresenter(MainView vista, Grafo<Provincia> grafoInicial) {
         this.vista = vista;
         this.grafo = grafoInicial;

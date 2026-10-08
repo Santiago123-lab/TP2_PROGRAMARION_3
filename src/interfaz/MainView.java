@@ -52,8 +52,8 @@ public class MainView {
         frame.getContentPane().add(panelProvincias);
         
         JLabel escribaProvinciaText = new JLabel("Escriba una provincia:");
-        escribaProvinciaText.setBounds(15, 30, 60, 14);
-        frame.getContentPane().add(escribaProvinciaText);
+        escribaProvinciaText.setBounds(15, 30, 88, 14);
+        panelProvincias.add(escribaProvinciaText);
         
         provinciaUsuario = new JTextField();
         provinciaUsuario.setBounds(15, 27, 91, 21);
@@ -101,18 +101,47 @@ public class MainView {
         panelConexiones.setLayout(null);
         frame.getContentPane().add(panelConexiones);
         
-        primeraProvinciaUsuario = new JTextField("Provincia 1");
+        primeraProvinciaUsuario = new JTextField();
         primeraProvinciaUsuario.setHorizontalAlignment(SwingConstants.CENTER);
         primeraProvinciaUsuario.setBounds(15, 30, 95, 21);
         panelConexiones.add(primeraProvinciaUsuario);
         
-        segundaProvinciaUsuario = new JTextField("Provincia 2");
+        segundaProvinciaUsuario = new JTextField();
         segundaProvinciaUsuario.setHorizontalAlignment(SwingConstants.CENTER);
         segundaProvinciaUsuario.setBounds(120, 30, 95, 21);
         panelConexiones.add(segundaProvinciaUsuario);
         
-        pesoUsuario = new JTextField("Peso");
+        pesoUsuario = new JTextField();
         pesoUsuario.setHorizontalAlignment(SwingConstants.CENTER);
+        pesoUsuario.setBounds(225, 30, 50, 21);
+        panelConexiones.add(pesoUsuario);
+        
+        JLabel provincia1Text = new JLabel("Provincia 1");
+        provincia1Text.setHorizontalAlignment(SwingConstants.CENTER);
+        provincia1Text.setBounds(15, 15, 95, 15);
+        panelConexiones.add(provincia1Text);
+
+        primeraProvinciaUsuario = new JTextField();
+        primeraProvinciaUsuario.setBounds(15, 30, 95, 21);
+        panelConexiones.add(primeraProvinciaUsuario);
+
+
+        JLabel provincia2Text = new JLabel("Provincia 2");
+        provincia2Text.setHorizontalAlignment(SwingConstants.CENTER);
+        provincia2Text.setBounds(120, 15, 95, 15);
+        panelConexiones.add(provincia2Text);
+
+        segundaProvinciaUsuario = new JTextField();
+        segundaProvinciaUsuario.setBounds(120, 30, 95, 21);
+        panelConexiones.add(segundaProvinciaUsuario);
+
+
+        JLabel pesoText = new JLabel("Peso");
+        pesoText.setHorizontalAlignment(SwingConstants.CENTER);
+        pesoText.setBounds(225, 15, 50, 15);
+        panelConexiones.add(pesoText);
+
+        pesoUsuario = new JTextField();
         pesoUsuario.setBounds(225, 30, 50, 21);
         panelConexiones.add(pesoUsuario);
         
@@ -157,7 +186,7 @@ public class MainView {
         	}
         });
         generarRegionesBoton.setToolTipText("Aplica Kruskal para dividir el grafo y DSU");
-        generarRegionesBoton.setBounds(178, 26, 150, 23);
+        generarRegionesBoton.setBounds(178, 26, 248, 23);
         panelResultados.add(generarRegionesBoton);
         
         resultadoRegiones = new JTextArea();
