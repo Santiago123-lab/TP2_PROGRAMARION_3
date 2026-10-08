@@ -1,0 +1,42 @@
+buenos aires, cordoba, 8
+buenos aires, santa fe, 5
+buenos aires, entre rios, 3
+buenos aires, la pampa, 7
+buenos aires, rio negro, 9
+cordoba, santa fe, 2
+cordoba, santiago del estero, 6
+cordoba, catamarca, 4
+cordoba, la rioja, 5
+cordoba, san luis, 3
+cordoba, la pampa, 8
+santa fe, chaco, 4
+santa fe, santiago del estero, 7
+santa fe, corrientes, 6
+santa fe, entre rios, 2
+entre rios, corrientes, 5
+corrientes, misiones, 3
+corrientes, chaco, 6
+chaco, formosa, 4
+chaco, salta, 8
+chaco, santiago del estero, 5
+formosa, salta, 7
+salta, jujuy, 2
+salta, tucuman, 4
+salta, santiago del estero, 6
+salta, catamarca, 5
+tucuman, santiago del estero, 3
+tucuman, catamarca, 5
+santiago del estero, catamarca, 6
+catamarca, la rioja, 4
+la rioja, san juan, 5
+san juan, mendoza, 3
+san juan, san luis, 6
+mendoza, san luis, 4
+mendoza, la pampa, 7
+mendoza, neuquen, 5
+san luis, la pampa, 6
+la pampa, rio negro, 4
+rio negro, neuquen, 3
+rio negro, chubut, 5
+chubut, santa cruz, 4
+santa cruz, tierra del fuego, 2
