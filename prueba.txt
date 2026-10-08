@@ -1,0 +1,5 @@
+buenos aires, cordoba, 15.5
+cordoba, santa fe, 8.0
+santa fe, mendoza, 22.1
+mendoza, san juan, 5.0
+buenos aires, la pampa, 12.0

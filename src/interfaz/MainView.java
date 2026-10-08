@@ -38,7 +38,7 @@ public class MainView {
         // Gestión de Provincias
         JPanel panelProvincias = new JPanel();
         panelProvincias.setBorder(new TitledBorder("Gestión de Provincias"));
-        panelProvincias.setBounds(10, 11, 440, 170);
+        panelProvincias.setBounds(10, 11, 440, 85);
         panelProvincias.setLayout(null);
         frame.getContentPane().add(panelProvincias);
         
@@ -111,9 +111,9 @@ public class MainView {
         
         resultadoRegiones = new JTextArea();
         resultadoRegiones.setEditable(false);
-        JScrollPane scrollResultados = new JScrollPane(resultadoRegiones);
-        scrollResultados.setBounds(15, 60, 410, 105);
-        panelResultados.add(scrollResultados);
+        JScrollPane scrollPane = new JScrollPane(resultadoRegiones);
+        scrollPane.setBounds(15, 60, 410, 275);
+        panelResultados.add(scrollPane);
     }
 
     public void mostrar() {
