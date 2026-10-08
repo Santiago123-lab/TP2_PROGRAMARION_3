@@ -5,25 +5,24 @@ import javax.swing.border.TitledBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.Color;
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
-import org.openstreetmap.gui.jmapviewer.Coordinate;
+//import org.openstreetmap.gui.jmapviewer.Coordinate;
 
 public class MainView {
     private JFrame frame;
-    private JTextField provinciaUsuario;
-    private JTextField primeraProvinciaUsuario;
-    private JTextField segundaProvinciaUsuario;
+    private JTextField verticeUsuario;
+    private JTextField primerVerticeUsuario;
+    private JTextField segundoVerticeUsuario;
     private JTextField pesoUsuario;
     private JTextField cantRegionesUsuario;
-    private JButton agregarProvinciaBoton;
+    private JButton agregarVerticeBoton;
     private JButton conectarBoton;
     private JButton generarRegionesBoton;
     private JButton cargarArchivoBoton;
     private JButton reiniciarBoton;
     private JTextArea resultadoRegiones;
-    private DefaultTableModel modeloProvincias;
+    private DefaultTableModel modeloVertices;
     private DefaultTableModel modeloConexiones;
     private JMapViewer mapa;
     
@@ -44,55 +43,47 @@ public class MainView {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(null);
         
-        // Gestión de Provincias
-        JPanel panelProvincias = new JPanel();
-        panelProvincias.setBorder(new TitledBorder("Gestión de Provincias"));
-        panelProvincias.setBounds(10, 11, 440, 170);
-        panelProvincias.setLayout(null);
-        frame.getContentPane().add(panelProvincias);
+        // Gestión de vértices
+        JPanel panelVertices = new JPanel();
+        panelVertices.setBorder(new TitledBorder("Gestión de Vértices"));
+        panelVertices.setBounds(10, 11, 440, 170);
+        panelVertices.setLayout(null);
+        frame.getContentPane().add(panelVertices);   
         
-        JLabel escribaProvinciaText = new JLabel("Escriba una provincia:");
-        escribaProvinciaText.setBounds(15, 30, 88, 14);
-        panelProvincias.add(escribaProvinciaText);
+        verticeUsuario = new JTextField();
+        verticeUsuario.setBounds(15, 27, 91, 21);
+        panelVertices.add(verticeUsuario);
+        verticeUsuario.setColumns(15);
         
-        provinciaUsuario = new JTextField();
-        provinciaUsuario.setBounds(15, 27, 91, 21);
-        panelProvincias.add(provinciaUsuario);
-        provinciaUsuario.setColumns(15);
-        
-        agregarProvinciaBoton = new JButton("Agregar provincia");
-        agregarProvinciaBoton.setToolTipText("Agrega la provincia escrita al sistema");
-        agregarProvinciaBoton.setBounds(109, 26, 122, 23);
-        panelProvincias.add(agregarProvinciaBoton);
+        agregarVerticeBoton = new JButton("Agregar vértice");
+        agregarVerticeBoton.setToolTipText("Agrega vértice al sistema");
+        agregarVerticeBoton.setBounds(109, 26, 122, 23);
+        panelVertices.add(agregarVerticeBoton);
         
         cargarArchivoBoton = new JButton("Cargar .TXT");
-        cargarArchivoBoton.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        	}
-        });
-        cargarArchivoBoton.setToolTipText("Carga múltiples provincias y conexiones desde un archivo");
+        cargarArchivoBoton.setToolTipText("Carga múltiples vértices y conexiones desde un archivo");
         cargarArchivoBoton.setBounds(233, 26, 91, 23); 
-        panelProvincias.add(cargarArchivoBoton);
+        panelVertices.add(cargarArchivoBoton);
         
-        modeloProvincias = new DefaultTableModel() {
+        modeloVertices = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-        modeloProvincias.addColumn("Provincias Ingresadas");
+        modeloVertices.addColumn("Vértices Ingresados");
         
-        JTable tablaProvincias = new JTable(modeloProvincias);
-        JScrollPane scrollProvincias = new JScrollPane(tablaProvincias);
-        scrollProvincias.setBounds(15, 55, 410, 100);
-        panelProvincias.add(scrollProvincias);
+        JTable tablaVertices = new JTable(modeloVertices);
+        JScrollPane scrollVertices = new JScrollPane(tablaVertices);
+        scrollVertices.setBounds(15, 55, 410, 100);
+        panelVertices.add(scrollVertices);
         
         reiniciarBoton = new JButton("Reiniciar Todo");
         reiniciarBoton.setForeground(Color.RED);
         reiniciarBoton.setBackground(Color.RED);
         reiniciarBoton.setToolTipText("Borra el grafo, las tablas y el mapa actual");
         reiniciarBoton.setBounds(326, 26, 99, 23); 
-        panelProvincias.add(reiniciarBoton);
+        panelVertices.add(reiniciarBoton);
         
         //conexiones (aristas)
         JPanel panelConexiones = new JPanel();
@@ -101,53 +92,39 @@ public class MainView {
         panelConexiones.setLayout(null);
         frame.getContentPane().add(panelConexiones);
         
-        primeraProvinciaUsuario = new JTextField();
-        primeraProvinciaUsuario.setHorizontalAlignment(SwingConstants.CENTER);
-        primeraProvinciaUsuario.setBounds(15, 30, 95, 21);
-        panelConexiones.add(primeraProvinciaUsuario);
+        primerVerticeUsuario = new JTextField();
+        primerVerticeUsuario.setHorizontalAlignment(SwingConstants.CENTER);
+        primerVerticeUsuario.setBounds(15, 30, 95, 21);
+        panelConexiones.add(primerVerticeUsuario);
         
-        segundaProvinciaUsuario = new JTextField();
-        segundaProvinciaUsuario.setHorizontalAlignment(SwingConstants.CENTER);
-        segundaProvinciaUsuario.setBounds(120, 30, 95, 21);
-        panelConexiones.add(segundaProvinciaUsuario);
+        segundoVerticeUsuario = new JTextField();
+        segundoVerticeUsuario.setHorizontalAlignment(SwingConstants.CENTER);
+        segundoVerticeUsuario.setBounds(120, 30, 95, 21);
+        panelConexiones.add(segundoVerticeUsuario);
         
         pesoUsuario = new JTextField();
         pesoUsuario.setHorizontalAlignment(SwingConstants.CENTER);
         pesoUsuario.setBounds(225, 30, 50, 21);
         panelConexiones.add(pesoUsuario);
         
-        JLabel provincia1Text = new JLabel("Provincia 1");
-        provincia1Text.setHorizontalAlignment(SwingConstants.CENTER);
-        provincia1Text.setBounds(15, 15, 95, 15);
-        panelConexiones.add(provincia1Text);
+        JLabel vertice1Text = new JLabel("Vértice 1");
+        vertice1Text.setHorizontalAlignment(SwingConstants.CENTER);
+        vertice1Text.setBounds(15, 15, 95, 15);
+        panelConexiones.add(vertice1Text);
 
-        primeraProvinciaUsuario = new JTextField();
-        primeraProvinciaUsuario.setBounds(15, 30, 95, 21);
-        panelConexiones.add(primeraProvinciaUsuario);
-
-
-        JLabel provincia2Text = new JLabel("Provincia 2");
-        provincia2Text.setHorizontalAlignment(SwingConstants.CENTER);
-        provincia2Text.setBounds(120, 15, 95, 15);
-        panelConexiones.add(provincia2Text);
-
-        segundaProvinciaUsuario = new JTextField();
-        segundaProvinciaUsuario.setBounds(120, 30, 95, 21);
-        panelConexiones.add(segundaProvinciaUsuario);
-
+        JLabel vertice2Text = new JLabel("Vértice 2");
+        vertice2Text.setHorizontalAlignment(SwingConstants.CENTER);
+        vertice2Text.setBounds(120, 15, 95, 15);
+        panelConexiones.add(vertice2Text);
 
         JLabel pesoText = new JLabel("Peso");
         pesoText.setHorizontalAlignment(SwingConstants.CENTER);
         pesoText.setBounds(225, 15, 50, 15);
         panelConexiones.add(pesoText);
-
-        pesoUsuario = new JTextField();
-        pesoUsuario.setBounds(225, 30, 50, 21);
-        panelConexiones.add(pesoUsuario);
         
         conectarBoton = new JButton("Conectar");
         conectarBoton.setBounds(285, 29, 141, 23);
-        conectarBoton.setToolTipText("Crea la arista entre las dos provincias");
+        conectarBoton.setToolTipText("Crea la arista entre los dos Vértices");
         panelConexiones.add(conectarBoton);        
         
         modeloConexiones = new DefaultTableModel() {
@@ -180,11 +157,7 @@ public class MainView {
         cantRegionesUsuario.setBounds(118, 27, 50, 21);
         panelResultados.add(cantRegionesUsuario);
         
-        generarRegionesBoton = new JButton("Calcular y Dibujar Regiones");
-        generarRegionesBoton.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        	}
-        });
+        generarRegionesBoton = new JButton("Calcular Regiones");
         generarRegionesBoton.setToolTipText("Aplica Kruskal para dividir el grafo y DSU");
         generarRegionesBoton.setBounds(178, 26, 248, 23);
         panelResultados.add(generarRegionesBoton);
@@ -205,10 +178,7 @@ public class MainView {
         
         mapa = new JMapViewer();
         mapa.setBounds(15, 25, 580, 495); 
-        mapa.setZoomControlsVisible(false); 
-        
-        Coordinate centroArgentina = new Coordinate(-40.3, -63);
-        mapa.setDisplayPosition(centroArgentina, 4); 
+        mapa.setZoomControlsVisible(false);
         
         panelMapa.add(mapa);
     }
@@ -217,8 +187,8 @@ public class MainView {
         frame.setVisible(true);
     }
 
-    public void agregarProvinciaATabla(String nombre) {
-        modeloProvincias.addRow(new Object[]{nombre});
+    public void agregarVerticeATabla(String nombre) {
+        modeloVertices.addRow(new Object[]{nombre});
     }
     
     public void agregarConexionATabla(String p1, String p2, double peso) {
@@ -226,7 +196,7 @@ public class MainView {
     }
     
     public void limpiarTodo() {
-        modeloProvincias.setRowCount(0);
+        modeloVertices.setRowCount(0);
         modeloConexiones.setRowCount(0); 
         resultadoRegiones.setText("");
         mapa.removeAllMapMarkers();
@@ -234,13 +204,13 @@ public class MainView {
     }
     
     //GETTERS PARA QUE EL PRESENTER LEA LOS INPUTS
-    public String getNombreProvincia() { return provinciaUsuario.getText().trim(); }
-    public String getPrimeraProvincia() { return primeraProvinciaUsuario.getText().trim(); }
-    public String getSegundaProvincia() { return segundaProvinciaUsuario.getText().trim(); }
+    public String getNombreVertice() { return verticeUsuario.getText().trim(); }
+    public String getPrimerVertice() { return primerVerticeUsuario.getText().trim(); }
+    public String getSegundoVertice() { return segundoVerticeUsuario.getText().trim(); }
     public String getPesoStr() { return pesoUsuario.getText().trim(); }
     public String getCantRegionesStr() { return cantRegionesUsuario.getText().trim(); }
 
-    public void limpiarCampoProvincia() { provinciaUsuario.setText(""); }
+    public void limpiarCampoVertice() { verticeUsuario.setText(""); }
     
     public void mostrarMensaje(String mensaje, String titulo, int tipo) {
         JOptionPane.showMessageDialog(frame, mensaje, titulo, tipo);
@@ -254,7 +224,7 @@ public class MainView {
 
     //LISTENERS PARA CONECTAR CON EL PRESENTER
     public void setReiniciarListener(ActionListener l) { reiniciarBoton.addActionListener(l); }
-    public void setAgregarProvinciaListener(ActionListener l) { agregarProvinciaBoton.addActionListener(l); }
+    public void setAgregarVerticeListener(ActionListener l) { agregarVerticeBoton.addActionListener(l); }
     public void setConectarListener(ActionListener l) { conectarBoton.addActionListener(l); }
     public void setGenerarRegionesListener(ActionListener l) { generarRegionesBoton.addActionListener(l); }
     public void setCargarArchivoListener(ActionListener l) { cargarArchivoBoton.addActionListener(l);
