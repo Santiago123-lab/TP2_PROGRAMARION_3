@@ -1,6 +1,6 @@
 package interfaz;
 
-import estructuras.Provincia;
+import estructuras.Vertice;
 import estructuras.Region;
 import grafo.Grafo;
 import grafo.Nodo;
@@ -10,40 +10,24 @@ import algoritmos.BuscadorDeRegiones;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.LinkedHashSet;
-//import java.util.Arrays;
-//import java.util.HashMap;
+
+
 import java.util.List;
-//import java.util.Map;
+
 import java.util.Scanner;
 import java.util.Set;
 
 import javax.swing.*;
-
-//import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-//import org.openstreetmap.gui.jmapviewer.*;
-
 
 public class MainPresenter {
 
     private MainView vista;
-    private Grafo<Provincia> grafo;
+    private Grafo<Vertice> grafo;
     private BuscadorDeRegiones buscador;
 
-//    private static final Color[] COLORES_REGIONES = {
-//            Color.RED,
-//            Color.BLUE,
-//            Color.GREEN,
-//            Color.MAGENTA,
-//            Color.ORANGE,
-//            Color.CYAN,
-//            Color.PINK,
-//            Color.YELLOW
-//    };
-//    
-    public MainPresenter(MainView vista, Grafo<Provincia> grafoInicial) {
+    public MainPresenter(MainView vista, Grafo<Vertice> grafoInicial) {
         this.vista = vista;
         this.grafo = grafoInicial;
         this.buscador = new BuscadorDeRegiones();
@@ -103,13 +87,22 @@ public class MainPresenter {
     
     
     private void agregarVertice() {
+    	
         try {
             String nombre = vista.getNombreVertice();
-            Provincia prov = new Provincia(nombre);
-            grafo.agregarNodo(prov);
-            vista.mostrarMensaje("Provincia agregada: " + prov.getNombre(), "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            
+            if (nombre.trim().isEmpty()) {
+                throw new IllegalArgumentException(
+                    "Por favor, ingrese un nombre para el vértice."
+                );
+            }
+            Vertice vertice = new Vertice(nombre);
+            grafo.agregarNodo(vertice);
+            vista.mostrarMensaje("Vértice agregado: " + vertice.getNombre(), "Éxito", JOptionPane.INFORMATION_MESSAGE);
             vista.limpiarCampoVertice();
-            vista.agregarVerticeATabla(prov.getNombre());
+            vista.agregarVerticeATabla(vertice.getNombre());
+            
+
         } catch (Exception ex) {
             vista.mostrarMensaje(ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -117,15 +110,15 @@ public class MainPresenter {
 
     private void conectarVertices() {
         try {
-            Provincia p1 = new Provincia(vista.getPrimerVertice());
-            Provincia p2 = new Provincia(vista.getSegundoVertice());
+            Vertice p1 = new Vertice(vista.getPrimerVertice());
+            Vertice p2 = new Vertice(vista.getSegundoVertice());
             double peso = Double.parseDouble(vista.getPesoStr());
 
-            Nodo<Provincia> nodo1 = buscarNodoProvincia(p1);
-            Nodo<Provincia> nodo2 = buscarNodoProvincia(p2);
+            Nodo<Vertice> nodo1 = buscarNodoProvincia(p1);
+            Nodo<Vertice> nodo2 = buscarNodoProvincia(p2);
 
             if (nodo1 == null || nodo2 == null) {
-                throw new IllegalArgumentException("Ambas provincias deben estar agregadas al grafo previamente.");
+                throw new IllegalArgumentException("Ambos vertices deben estar agregados al grafo previamente.");
             }
 
             grafo.agregarArista(nodo1, nodo2, peso);
@@ -143,11 +136,11 @@ public class MainPresenter {
             int k = Integer.parseInt(vista.getCantRegionesStr());
             
             if (grafo.getTodosLosNodos().isEmpty()) {
-                throw new IllegalStateException("El grafo está vacío. Cargue provincias y conexiones primero.");
+                throw new IllegalStateException("El grafo está vacío. Cargue los vértices y conexiones primero.");
             }
             
             //calculamos el MST usando Kruskal
-            Grafo<Provincia> mst = Kruskal.calcularMST(grafo);
+            Grafo<Vertice> mst = Kruskal.calcularMST(grafo);
             
             //buscamos las regiones dividiendo el MST
             List<Region> regiones = buscador.agrupar(mst, k);
@@ -156,7 +149,7 @@ public class MainPresenter {
             StringBuilder sb = new StringBuilder();
             sb.append("Se generaron ").append(regiones.size()).append(" regiones:\n");
             for (int i = 0; i < regiones.size(); i++) {
-                sb.append("Región ").append(i + 1).append(": ").append(regiones.get(i).getProvincias()).append("\n");
+                sb.append("Región ").append(i + 1).append(": ").append(regiones.get(i).getVertices()).append("\n");
             }
             
 //            actualizarMapaVisual(regiones);
@@ -171,7 +164,7 @@ public class MainPresenter {
     
     private void cargarDesdeArchivo() {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Seleccione el archivo de provincias (.txt)");
+        fileChooser.setDialogTitle("Seleccione el archivo (.txt)");
 
         int seleccion = fileChooser.showOpenDialog(null);
         
@@ -185,7 +178,7 @@ public class MainPresenter {
         	FileInputStream fis = new FileInputStream(archivo);
         	Scanner scanner = new Scanner(fis);
         ) {
-        	Grafo<Provincia> nuevoGrafo = new Grafo<>();
+        	Grafo<Vertice> nuevoGrafo = new Grafo<>();
         	
             int conexionesAgregadas = 0;
             List<String[]> conexionesCargadas = new java.util.ArrayList<>();
@@ -212,12 +205,12 @@ public class MainPresenter {
                     );
                 }
 
-                Provincia v1 = new Provincia(nombreV1);
-                Provincia v2 = new Provincia(nombreV2);
+                Vertice v1 = new Vertice(nombreV1);
+                Vertice v2 = new Vertice(nombreV2);
 
-                Nodo<Provincia> nodo1 = buscarNodoProvincia(nuevoGrafo, v1);
+                Nodo<Vertice> nodo1 = buscarNodoVertice(nuevoGrafo, v1);
 
-                Nodo<Provincia> nodo2 = buscarNodoProvincia(nuevoGrafo, v2);
+                Nodo<Vertice> nodo2 = buscarNodoVertice(nuevoGrafo, v2);
 
                 if (nodo1 == null) {
                     nodo1 = nuevoGrafo.agregarNodo(v1);
@@ -256,109 +249,8 @@ public class MainPresenter {
             }
      }
  
-//    private void actualizarMapaVisual(List<Region> regiones) {
-//        JMapViewer mapa = vista.getMapa();
-//        limpiarMapa(mapa);
-//
-//        if (regiones == null || regiones.isEmpty()) {
-//            dibujarNodosIniciales(mapa);
-//        } else {
-//            dibujarNodosPorRegion(regiones, mapa);
-//        }
-//
-//        dibujarAristas(regiones, mapa);
-//    }
-//
-//	private void dibujarNodosIniciales(JMapViewer mapa) {
-//
-//	    for (Nodo<Provincia> nodo : grafo.getTodosLosNodos()) {
-//	        Provincia provincia = nodo.getValor();
-//
-//	        Coordinate coordenada = obtenerCoordenada(provincia);
-//
-//	        mapa.addMapMarker(
-//	                new MapMarkerDot(
-//	                        provincia.getNombre(),
-//	                        coordenada
-//	                )
-//	        );
-//	    } 
-//	}
-//	
-//	private void dibujarNodosPorRegion(List<Region> regiones, JMapViewer mapa) {
-//	    for (int i = 0; i < regiones.size(); i++) {
-//	        Region region = regiones.get(i);
-//	        Color color = COLORES_REGIONES[i % COLORES_REGIONES.length];
-//
-//	        for (Provincia provincia : region.getProvincias()) {
-//	            MapMarkerDot marcador = new MapMarkerDot(
-//	                    provincia.getNombre(),
-//	                    obtenerCoordenada(provincia)
-//	            );
-//
-//	            marcador.setBackColor(color);
-//	            mapa.addMapMarker(marcador);
-//	        }
-//	    }
-//	}
-//	
-//	
-//	private void dibujarAristas(
-//	        List<Region> regiones,
-//	        JMapViewer mapa) {
-//
-//	    for (grafo.Arista<Provincia> arista : grafo.getTodasLasAristas()) {
-//
-//	        Provincia origen = arista.getOrigen().getValor();
-//	        Provincia destino = arista.getDestino().getValor();
-//
-//	        if (!debeDibujarseArista(origen, destino, regiones)) {
-//	            continue;
-//	        }
-//
-//	        Coordinate coordenadaOrigen = obtenerCoordenada(origen);
-//	        Coordinate coordenadaDestino = obtenerCoordenada(destino);
-//
-//	        mapa.addMapPolygon(
-//	                new MapPolygonImpl(
-//	                        Arrays.asList(
-//	                                coordenadaOrigen,
-//	                                coordenadaDestino,
-//	                                coordenadaOrigen
-//	                        )
-//	                )
-//	        );
-//	    }
-//	}
-	
-	
-//	private boolean debeDibujarseArista(
-//	        Provincia origen,
-//	        Provincia destino,
-//	        List<Region> regiones) {
-//
-//	    if (regiones == null || regiones.isEmpty()) {
-//	        return true;
-//	    }
-//
-//	    for (Region region : regiones) {
-//	        if (region.getProvincias().contains(origen)
-//	                && region.getProvincias().contains(destino)) {
-//	            return true;
-//	        }
-//	    }
-//
-//	    return false;
-//	}
-//	
-//	
-//	private void limpiarMapa(JMapViewer mapa) {
-//	    mapa.removeAllMapMarkers();
-//	    mapa.removeAllMapPolygons();
-//	}
-//	
-	private Nodo<Provincia> buscarNodoProvincia(Provincia provincia) {
-	    for (Nodo<Provincia> nodo : grafo.getTodosLosNodos()) {
+	private Nodo<Vertice> buscarNodoProvincia(Vertice provincia) {
+	    for (Nodo<Vertice> nodo : grafo.getTodosLosNodos()) {
 	        if (nodo.getValor().equals(provincia)) {
 	            return nodo;
 	        }
@@ -366,8 +258,8 @@ public class MainPresenter {
 	    return null;
 	}
 	
-	private Nodo<Provincia> buscarNodoProvincia(Grafo<Provincia> grafo, Provincia provincia) {
-	    for (Nodo<Provincia> nodo : grafo.getTodosLosNodos()) {
+	private Nodo<Vertice> buscarNodoVertice(Grafo<Vertice> grafo, Vertice provincia) {
+	    for (Nodo<Vertice> nodo : grafo.getTodosLosNodos()) {
 
 	        if (nodo.getValor().equals(provincia)) {
 	            return nodo;

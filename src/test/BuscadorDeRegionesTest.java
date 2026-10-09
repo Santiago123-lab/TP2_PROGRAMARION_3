@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import algoritmos.BuscadorDeRegiones;
-import estructuras.Provincia;
+import estructuras.Vertice;
 import estructuras.Region;
 import grafo.Grafo;
 import grafo.Nodo;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class BuscadorDeRegionesTest {
 
-    private Grafo<Provincia> mst;
+    private Grafo<Vertice> mst;
     private BuscadorDeRegiones buscador;
 
     @Before
@@ -22,9 +22,9 @@ public class BuscadorDeRegionesTest {
         mst = new Grafo<>();
         buscador = new BuscadorDeRegiones();
         
-        Nodo<Provincia> bsas = mst.agregarNodo(new Provincia("Buenos Aires"));
-        Nodo<Provincia> cordoba = mst.agregarNodo(new Provincia("Cordoba"));
-        Nodo<Provincia> santaFe = mst.agregarNodo(new Provincia("Santa Fe"));
+        Nodo<Vertice> bsas = mst.agregarNodo(new Vertice("Buenos Aires"));
+        Nodo<Vertice> cordoba = mst.agregarNodo(new Vertice("Cordoba"));
+        Nodo<Vertice> santaFe = mst.agregarNodo(new Vertice("Santa Fe"));
 
         
         mst.agregarArista(bsas, cordoba, 10.0);
@@ -43,7 +43,7 @@ public class BuscadorDeRegionesTest {
         List<Region> regiones = buscador.agrupar(mst, 1);
         
         assertEquals("Debería haber quedado 1 sola región", 1, regiones.size());
-        assertEquals("La región debe contener las 3 provincias", 3, regiones.get(0).getProvincias().size());
+        assertEquals("La región debe contener las 3 provincias", 3, regiones.get(0).getVertices().size());
     }
     
     @Test
@@ -55,7 +55,7 @@ public class BuscadorDeRegionesTest {
 
         for (Region region : regiones) {
         	
-            assertEquals(1, region.getProvincias().size());
+            assertEquals(1, region.getVertices().size());
         }
     }
     
@@ -68,8 +68,8 @@ public class BuscadorDeRegionesTest {
 
         for (Region region : regiones) {
         	
-            if (region.getProvincias().contains(new Provincia("Buenos Aires"))
-               && region.getProvincias().contains(new Provincia("Cordoba"))) {
+            if (region.getVertices().contains(new Vertice("Buenos Aires"))
+               && region.getVertices().contains(new Vertice("Cordoba"))) {
             	
                 estanJuntas = true;
             }
@@ -87,8 +87,8 @@ public class BuscadorDeRegionesTest {
 
         for (Region region : regiones) {
         	
-            if (region.getProvincias().contains(new Provincia("Santa Fe"))
-               && !region.getProvincias().contains(new Provincia("Cordoba"))) {
+            if (region.getVertices().contains(new Vertice("Santa Fe"))
+               && !region.getVertices().contains(new Vertice("Cordoba"))) {
             	
                 santaFeSeparada = true;
             }

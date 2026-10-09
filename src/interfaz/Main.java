@@ -1,7 +1,7 @@
 package interfaz;
 
 import java.awt.EventQueue;
-import estructuras.Provincia;
+import estructuras.Vertice;
 import grafo.Grafo;
 
 public class Main {
@@ -9,7 +9,7 @@ public class Main {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    Grafo<Provincia> modeloGrafo = new Grafo<>();
+                    Grafo<Vertice> modeloGrafo = new Grafo<>();
                     MainView vista = new MainView();
                     MainPresenter presentador = new MainPresenter(vista, modeloGrafo);
                     vista.mostrar();

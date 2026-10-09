@@ -6,8 +6,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionListener;
 import java.awt.Color;
-import org.openstreetmap.gui.jmapviewer.JMapViewer;
-//import org.openstreetmap.gui.jmapviewer.Coordinate;
+
 
 public class MainView {
     private JFrame frame;
@@ -24,7 +23,7 @@ public class MainView {
     private JTextArea resultadoRegiones;
     private DefaultTableModel modeloVertices;
     private DefaultTableModel modeloConexiones;
-    private JMapViewer mapa;
+
     
 
     public MainView() {
@@ -39,7 +38,7 @@ public class MainView {
     private void initialize() {
         frame = new JFrame();
         frame.setTitle("Buscador de Regiones - TP2");
-        frame.setBounds(100, 100, 1100, 600);
+        frame.setBounds(100, 100, 475, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(null);
         
@@ -168,20 +167,8 @@ public class MainView {
         scrollResultados.setBounds(15, 55, 410, 105);
         panelResultados.add(scrollResultados);
         
-        
-        //Panel del mapa
-        JPanel panelMapa = new JPanel();
-        panelMapa.setBorder(new TitledBorder("Visualización Geográfica"));
-        panelMapa.setBounds(460, 11, 610, 535);
-        panelMapa.setLayout(null); 
-        frame.getContentPane().add(panelMapa);
-        
-        mapa = new JMapViewer();
-        mapa.setBounds(15, 25, 580, 495); 
-        mapa.setZoomControlsVisible(false);
-        
-        panelMapa.add(mapa);
     }
+
 
     public void mostrar() {
         frame.setVisible(true);
@@ -199,8 +186,7 @@ public class MainView {
         modeloVertices.setRowCount(0);
         modeloConexiones.setRowCount(0); 
         resultadoRegiones.setText("");
-        mapa.removeAllMapMarkers();
-        mapa.removeAllMapPolygons();
+
     }
     
     //GETTERS PARA QUE EL PRESENTER LEA LOS INPUTS
@@ -220,8 +206,6 @@ public class MainView {
         resultadoRegiones.setText(texto);
     }
     
-    public JMapViewer getMapa() { return mapa; }
-
     //LISTENERS PARA CONECTAR CON EL PRESENTER
     public void setReiniciarListener(ActionListener l) { reiniciarBoton.addActionListener(l); }
     public void setAgregarVerticeListener(ActionListener l) { agregarVerticeBoton.addActionListener(l); }
